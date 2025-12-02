@@ -1,5 +1,7 @@
 use rand::seq::{IndexedRandom, SliceRandom};
 use std::string::String;
+//use serde_json::Value::String;
+use zxcvbn::zxcvbn;
 //use serde::de::Unexpected::Str;
 //use serde_json::Value::String as OtherString;
 
@@ -42,6 +44,12 @@ pub fn process_genpass(
     }
     password.shuffle(&mut rng);
     //TODO: make sure the password has at least one of each type
-    println!("{}", String::from_utf8(password)?);
+    let password = String::from_utf8(password)?;
+    println!("{}", password);
+
+    //output password strength in std
+    let estimate = zxcvbn(&password, &[]);
+    println!("Password strength: {}", estimate.score());
+
     Ok(())
 }
